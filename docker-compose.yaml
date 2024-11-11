@@ -123,7 +123,6 @@ services:
       - ./dags:/opt/airflow/dags
       - ./script/entrypoint.sh:/opt/airflow/script/entrypoint.sh
       - ./requirements.txt:/opt/airflow/requirements.txt
-      - ./new_streaming_data:/opt/airflow/new_streaming_data
     ports:
       - "8080:8080"
     healthcheck:
@@ -143,7 +142,6 @@ services:
       - ./dags:/opt/airflow/dags
       - ./script/entrypoint.sh:/opt/airflow/script/entrypoint.sh
       - ./requirements.txt:/opt/airflow/requirements.txt
-      - ./new_streaming_data:/opt/airflow/new_streaming_data
     environment:
       - LOAD_EX=n
       - EXECUTOR=Sequential

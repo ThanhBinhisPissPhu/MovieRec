@@ -8,12 +8,12 @@ import logging
 from streamer import CSVStreamerPandas
 from kafka import KafkaProducer
 
-rating_path = 'new_streaming_data/new_streaming_ratings.csv'
-review_path = 'new_streaming_data/new_streaming_reviews.csv'
+rating_path = 'dags/new_streaming_data/new_streaming_ratings.csv'
+review_path = 'dags/new_streaming_data/new_streaming_reviews.csv'
 
 default_args = {
     'owner': 'thanhbinh',
-    'start_date': datetime(2024, 11, 10),
+    'start_date': datetime(2024, 11, 11),
 }
 
 rating_streamer = CSVStreamerPandas(rating_path)
@@ -25,7 +25,7 @@ def get_rating_data(streamer):
     curr_time = time.time()
 
     while True:
-        if time.time() - curr_time > 15:
+        if time.time() - curr_time > 5:
             break
         try:
             new_data = streamer.get_next_row()
@@ -48,6 +48,9 @@ with DAG('user_automation',
     streaming_task = PythonOperator(
         task_id='streaming_data_from_csv',
         python_callable=get_rating_data,
+        op_args=[rating_streamer],
     )
+    
+# get_rating_data(rating_streamer)
 
 
